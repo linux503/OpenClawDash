@@ -46,13 +46,22 @@ function getGatewayPort() {
 const GATEWAY_PORT = getGatewayPort();
 
 // 工作空间路径，来自 openclaw.json agents.defaults.workspace
+// 支持相对路径与跨机器：若配置的路径不存在，回退到 OPENCLAW_HOME/workspace
 function getWorkspacePath() {
   try {
     const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-    const wp = cfg?.agents?.defaults?.workspace || cfg?.agents?.workspace;
-    if (typeof wp === 'string' && wp && fs.existsSync(wp)) return wp;
+    let wp = cfg?.agents?.defaults?.workspace || cfg?.agents?.workspace;
+    if (typeof wp !== 'string' || !wp) return fallbackWorkspace();
+    // 相对路径：基于 OPENCLAW_HOME 解析
+    const resolved = path.isAbsolute(wp) ? wp : path.resolve(OPENCLAW_HOME, wp);
+    if (fs.existsSync(resolved)) return resolved;
+    return fallbackWorkspace();
   } catch (_) {}
-  return null;
+  return fallbackWorkspace();
+}
+function fallbackWorkspace() {
+  const def = path.join(OPENCLAW_HOME, 'workspace');
+  return fs.existsSync(def) ? def : null;
 }
 
 // 扫描工作空间，统计项目（目录）与 memory 目录
@@ -311,20 +320,34 @@ function loadRunningTasksAsync() {
       const sessions = data.sessions?.recent || [];
       const queue = data.queuedSystemEvents || [];
       const rt = {
-        sessions: sessions.map(s => ({
-          key: s.key,
-          sessionId: s.sessionId,
-          channel: s.kind || s.channel || '-',
-          age: s.age,
-          model: s.model || '-',
-          label: (s.flags && s.flags.find(f => f.startsWith('id:'))) ? s.key : (s.sessionId || s.key)
-        })),
+        sessions: sessions.map(s => {
+          const rawLabel = (s.flags && s.flags.find(f => f.startsWith('id:'))) ? s.key : (s.sessionId || s.key);
+          const label = maskSessionKey(rawLabel);
+          return {
+            key: maskSessionKey(s.key),
+            sessionId: s.sessionId,
+            channel: s.kind || s.channel || '-',
+            age: s.age,
+            model: s.model || '-',
+            label
+          };
+        }),
         queueCount: queue.length,
         gatewayReachable: data.gateway?.reachable === true
       };
       return enrichRunningSessions(rt);
     })
     .catch(() => ({ sessions: [], queueCount: 0, gatewayReachable: false }));
+}
+
+function resolveSessionFilePath(storedPath) {
+  if (!storedPath || typeof storedPath !== 'string') return null;
+  if (fs.existsSync(storedPath)) return storedPath;
+  const base = path.basename(storedPath).replace(/\.jsonl.*$/, '');
+  if (!base || !fs.existsSync(SESSIONS_DIR)) return null;
+  const candidates = fs.readdirSync(SESSIONS_DIR);
+  const match = candidates.find(f => f === base + '.jsonl') || candidates.find(f => f.startsWith(base + '.jsonl.reset.'));
+  return match ? path.join(SESSIONS_DIR, match) : null;
 }
 
 function enrichRunningSessions(rt) {
@@ -342,9 +365,10 @@ function enrichRunningSessions(rt) {
     const meta = sessionIndex[sid];
     let project = '-';
     let progress = '-';
-    if (meta && meta.sessionFile && fs.existsSync(meta.sessionFile)) {
+    const sessionFilePath = resolveSessionFilePath(meta?.sessionFile);
+    if (sessionFilePath) {
       try {
-        const lines = fs.readFileSync(meta.sessionFile, 'utf8').split('\n').filter(Boolean);
+        const lines = fs.readFileSync(sessionFilePath, 'utf8').split('\n').filter(Boolean);
         let cwd = null;
         let lastProgress = null;
         for (let i = 0; i < lines.length; i++) {
@@ -381,10 +405,27 @@ function enrichRunningSessions(rt) {
   return rt;
 }
 
+function maskLongId(num) {
+  const s = String(num || '');
+  if (s.length <= 6) return s;
+  return s.slice(0, 4) + '****';
+}
+
 function maskOrigin(origin) {
   if (!origin || typeof origin !== 'string') return '-';
   const m = origin.match(/id:\s*(\d+)/i);
-  return m ? 'id:' + m[1] : '-';
+  return m ? 'id:' + maskLongId(m[1]) : '-';
+}
+
+function maskSessionKey(key) {
+  if (!key || typeof key !== 'string') return '-';
+  const parts = key.split(':');
+  const last = parts[parts.length - 1];
+  if (/^\d{7,}$/.test(last)) {
+    parts[parts.length - 1] = maskLongId(last);
+    return parts.join(':');
+  }
+  return key;
 }
 
 function loadActiveSessions() {
@@ -393,7 +434,8 @@ function loadActiveSessions() {
     return Object.entries(data).filter(([k]) => !k.startsWith('_')).map(([key, s]) => {
       const raw = s.origin?.label || s.origin?.from || '-';
       return {
-        key, channel: s.lastChannel || s.deliveryContext?.channel || '-',
+        key: maskSessionKey(key),
+        channel: s.lastChannel || s.deliveryContext?.channel || '-',
         updatedAt: s.updatedAt, origin: maskOrigin(raw)
       };
     });
@@ -404,12 +446,14 @@ function loadActiveSessions() {
 function loadConversation(sessionIdOrFile) {
   if (!sessionIdOrFile) return { sessionId: null, messages: [] };
   let filePath;
-  if (sessionIdOrFile.includes('/')) {
-    filePath = sessionIdOrFile;
-  } else {
-    const candidates = fs.existsSync(SESSIONS_DIR) ? fs.readdirSync(SESSIONS_DIR) : [];
+  if (sessionIdOrFile.includes('/') || sessionIdOrFile.includes(path.sep)) {
+    filePath = resolveSessionFilePath(sessionIdOrFile);
+  } else if (fs.existsSync(SESSIONS_DIR)) {
+    const candidates = fs.readdirSync(SESSIONS_DIR);
     const match = candidates.find(f => f === sessionIdOrFile + '.jsonl') || candidates.find(f => f.startsWith(sessionIdOrFile + '.jsonl.reset.'));
-    if (match) filePath = path.join(SESSIONS_DIR, match);
+    filePath = match ? path.join(SESSIONS_DIR, match) : null;
+  } else {
+    filePath = null;
   }
   if (!filePath || !fs.existsSync(filePath)) return { sessionId: sessionIdOrFile, messages: [] };
   const lines = fs.readFileSync(filePath, 'utf8').split('\n').filter(Boolean);
@@ -713,6 +757,7 @@ const i18n = {
     activeSessions: '活跃会话', session: '会话', channel: '渠道', source: '来源', updatedAt: '更新时间',
     providerStats: 'Provider 统计', modelStats: '模型统计', recentCalls: '最近调用',
     infoOverview: '信息概况', usageBreakdown: '用量明细', providerDetail: '按 Provider', modelDetail: '按模型', share: '占比', noUsageData: '暂无用量数据', providerNote: '（每 Provider ≈ 一 API Key）',
+    sessionDetails: '会话详情', sessionKey: '会话', lastActive: '最近活动', noSessionDetails: '暂无会话',
     calls: '调用', input: '输入', output: '输出', cache: '缓存', time: '时间', model: '模型',
     noCron: '暂无定时任务', noSessions: '暂无活跃会话', noData: '暂无数据',
     disabled: '已禁用', active: '活跃', error: '错误', ok: 'OK', refresh: '刷新',
@@ -790,6 +835,7 @@ const i18n = {
     activeSessions: 'Active Sessions', session: 'Session', channel: 'Channel', source: 'Source', updatedAt: 'Updated',
     providerStats: 'By Provider', modelStats: 'By Model', recentCalls: 'Recent Calls',
     infoOverview: 'Overview', usageBreakdown: 'Usage Breakdown', providerDetail: 'By Provider', modelDetail: 'By Model', share: 'Share', noUsageData: 'No usage data', providerNote: '(each Provider ≈ one API key)',
+    sessionDetails: 'Session Details', sessionKey: 'Session', lastActive: 'Last active', noSessionDetails: 'No sessions',
     calls: 'Calls', input: 'Input', output: 'Output', cache: 'Cache', time: 'Time', model: 'Model',
     noCron: 'No cron jobs', noSessions: 'No active sessions', noData: 'No data',
     disabled: 'Disabled', active: 'Active', error: 'Error', ok: 'OK', refresh: 'Refresh',
@@ -948,6 +994,12 @@ const HTML = `<!DOCTYPE html>
     @keyframes noisePulse { 0%,100%{ opacity: 0.015; } 50%{ opacity: 0.03; } }
     @media (prefers-reduced-motion: reduce) {
       body, body::before, body::after, .bg-effects .orb, .bg-effects .particle { animation: none !important; }
+      .cursor-glow { display: none !important; }
+    }
+    .cursor-glow {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 2;
+      background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(13,148,136,0.12) 0%, rgba(20,184,166,0.05) 30%, transparent 55%);
     }
     .bg-effects {
       position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
@@ -1170,6 +1222,17 @@ const HTML = `<!DOCTYPE html>
     .usage-breakdown-section.collapsed .section-header .collapse-chevron { transform: rotate(-90deg); }
     .usage-breakdown-content { max-height: 2000px; opacity: 1; transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.3s ease; }
 .usage-breakdown-section.collapsed .usage-breakdown-content { max-height: 0; opacity: 0; overflow: hidden; margin-top: -8px; }
+    .session-details-section .section-header { cursor: pointer; user-select: none; }
+    .session-details-section .section-header:hover { color: var(--accent); }
+    .session-details-section .section-header .collapse-chevron { margin-right: 8px; transition: transform 0.3s ease; }
+    .session-details-section.collapsed .section-header .collapse-chevron { transform: rotate(-90deg); }
+    .session-details-content { max-height: 2000px; opacity: 1; transition: max-height 0.35s ease, opacity 0.25s ease; }
+    .session-details-section.collapsed .session-details-content { max-height: 0; opacity: 0; overflow: hidden; }
+    .session-detail-table { width: 100%; font-size: 13px; border-collapse: collapse; background: linear-gradient(145deg, rgba(255,255,255,0.25) 0%, rgba(250,252,250,0.22) 100%); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
+    .session-detail-table th, .session-detail-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .session-detail-table th { background: rgba(13,148,136,0.08); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+    .session-detail-table tr:last-child td { border-bottom: none; }
+    .session-detail-table tr:hover td { background: rgba(13,148,136,0.04); }
     .breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 18px; }
     @media (max-width: 900px) { .breakdown-grid { grid-template-columns: 1fr; } }
     .breakdown-panel { background: linear-gradient(145deg, rgba(255,255,255,0.3) 0%, rgba(250,252,250,0.26) 100%); backdrop-filter: blur(24px) saturate(1.05); -webkit-backdrop-filter: blur(24px) saturate(1.05); border-radius: 18px; padding: 20px; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 8px 32px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.5); transition: box-shadow 0.3s, border-color 0.3s; }
@@ -1328,6 +1391,7 @@ const HTML = `<!DOCTYPE html>
   </style>
 </head>
 <body>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <div class="bg-effects" aria-hidden="true">
     <span class="orb orb-1"></span>
     <span class="orb orb-2"></span>
@@ -1388,6 +1452,16 @@ const HTML = `<!DOCTYPE html>
       <div class="card highlight" id="statProjects"><div class="label" data-i18n="projects">项目情况</div><div class="val" id="projectCount">0</div><div class="card-sub" id="projectSub">—</div></div>
       <div class="card"><div class="label" data-i18n="cacheHitRate">缓存命中率</div><div class="val" id="cacheHitRateCard">—</div><div class="card-sub" id="cacheHitRateSub">—</div></div>
       </div>
+      </div>
+    </section>
+    <section class="section session-details-section" id="sessionDetailsSection">
+      <div class="section-header section-title"><span class="collapse-chevron">▾</span><span class="section-header-text" data-i18n="sessionDetails">会话详情</span></div>
+      <div class="session-details-content" id="sessionDetailsContent">
+        <table class="session-detail-table" id="sessionDetailTable">
+          <thead><tr><th data-i18n="sessionKey">会话</th><th data-i18n="channel">渠道</th><th data-i18n="source">来源</th><th data-i18n="lastActive">最近活动</th></tr></thead>
+          <tbody id="sessionDetailTableBody"></tbody>
+        </table>
+        <p class="session-empty" id="sessionEmpty" style="display:none" data-i18n="noSessionDetails">暂无会话</p>
       </div>
     </section>
     <section class="section usage-breakdown-section" id="usageBreakdownSection">
@@ -1476,6 +1550,16 @@ const HTML = `<!DOCTYPE html>
     <p class="footer" id="updated"></p>
   </div>
   <script>
+    (function(){
+      if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      var el=document.getElementById('cursorGlow');if(!el)return;
+      document.addEventListener('mousemove',function(e){
+        var x=(e.clientX/window.innerWidth)*100;
+        var y=(e.clientY/window.innerHeight)*100;
+        el.style.setProperty('--gx',x+'%');
+        el.style.setProperty('--gy',y+'%');
+      });
+    })();
     window.__I18N__ = ${JSON.stringify(i18n)};
     let lang = localStorage.getItem('api-console-lang') || 'zh';
     function t(k) { const zh = window.__I18N__.zh; const en = window.__I18N__.en; if (lang === 'en') return (en && en[k]) || k; return (zh && zh[k]) || (en && en[k]) || k; }
@@ -1584,6 +1668,7 @@ const HTML = `<!DOCTYPE html>
       const d = new Date(ts);
       return d.toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
+    function esc(x) { return String(x ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
     function setText(id, val) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -1778,6 +1863,26 @@ const HTML = `<!DOCTYPE html>
           breakdownSection.dataset.inited = '1';
           breakdownSection.querySelector('.section-header').onclick = function(){ breakdownSection.classList.toggle('collapsed'); };
         }
+        const activeSessions = data.activeSessions || [];
+        const sessionTbody = document.getElementById('sessionDetailTableBody');
+        const sessionEmpty = document.getElementById('sessionEmpty');
+        if (sessionTbody) {
+          if (activeSessions.length) {
+            sessionTbody.innerHTML = activeSessions.slice(0, 20).map(s => {
+              const upd = s.updatedAt ? fmtTime(s.updatedAt) : '—';
+              return '<tr><td>' + esc(s.key || '-') + '</td><td>' + esc(s.channel || '-') + '</td><td>' + esc(s.origin || '-') + '</td><td>' + upd + '</td></tr>';
+            }).join('');
+            if (sessionEmpty) sessionEmpty.style.display = 'none';
+          } else {
+            sessionTbody.innerHTML = '';
+            if (sessionEmpty) { sessionEmpty.style.display = 'block'; sessionEmpty.textContent = t('noSessionDetails'); }
+          }
+        }
+        const sessionSection = document.getElementById('sessionDetailsSection');
+        if (sessionSection && !sessionSection.dataset.inited) {
+          sessionSection.dataset.inited = '1';
+          sessionSection.querySelector('.section-header').onclick = function(){ sessionSection.classList.toggle('collapsed'); };
+        }
         if ((a.todayCost || 0) > 1) alerts.push({ type: 'warn', msg: t('costHigh') + ' $' + (a.todayCost||0).toFixed(2) });
         const alertsContainer = document.getElementById('alerts');
         alertsContainer.innerHTML = alerts.map(al => '<div class="alert '+al.type+'">'+al.msg+'</div>').join('');
@@ -1851,39 +1956,42 @@ function buildSubPage(page) {
     #content{min-height:120px}
     .sub-title{font-size:28px;font-weight:600;margin-bottom:8px;color:var(--accent);text-shadow:0 0 24px rgba(13,148,136,0.35);letter-spacing:0.05em;position:relative;padding-left:16px;border-left:4px solid var(--accent)}
     .sub-meta{font-size:13px;color:var(--muted);margin-bottom:24px;padding-left:20px}
+    @media(prefers-reduced-motion:reduce){.cursor-glow{display:none!important}}
+    .cursor-glow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(13,148,136,0.12) 0%,rgba(20,184,166,0.05) 30%,transparent 55%)}
   `;
   const skillCss = `
-    .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+    .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
     .skill-tile{
-      background:linear-gradient(135deg,rgba(255,255,255,0.32) 0%,rgba(250,252,250,0.28) 100%);
-      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-      border:1px solid rgba(13,148,136,0.12);
-      border-radius:16px;
-      padding:24px 26px;
+      background:#ffffff;
+      border:1px solid rgba(203,213,225,0.6);
+      border-radius:12px;
+      padding:14px 16px;
       position:relative;
       overflow:hidden;
-      box-shadow:0 4px 24px rgba(15,23,42,0.06),inset 0 1px 0 rgba(255,255,255,0.9);
+      box-shadow:0 1px 3px rgba(0,0,0,0.06);
       transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;
     }
     .skill-tile::before{
       content:'';
       position:absolute;left:0;top:0;bottom:0;
-      width:4px;
-      background:linear-gradient(180deg,var(--accent),var(--accent-2));
-      border-radius:16px 0 0 16px;
-      opacity:0.9;
+      width:3px;
+      border-radius:12px 0 0 12px;
     }
+    .skill-tile:nth-child(4n+1)::before{background:linear-gradient(180deg,#0d9488,#14b8a6)}
+    .skill-tile:nth-child(4n+2)::before{background:linear-gradient(180deg,#8b5cf6,#a78bfa)}
+    .skill-tile:nth-child(4n+3)::before{background:linear-gradient(180deg,#f97316,#fb923c)}
+    .skill-tile:nth-child(4n+4)::before{background:linear-gradient(180deg,#0891b2,#22d3ee)}
     .skill-tile:hover{
-      transform:scale(1.02);
-      box-shadow:0 8px 32px rgba(15,23,42,0.1);
-      border-color:rgba(13,148,136,0.25);
+      transform:translateY(-2px);
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      border-color:rgba(148,163,184,0.4);
     }
-    .skill-tile .name{font-weight:600;font-size:16px;margin-bottom:10px;color:var(--text);font-family:'Inter',-apple-system,sans-serif}
-    .skill-tile .desc{color:var(--muted);font-size:13px;line-height:1.55}
-    .skill-tile .badge{display:inline-block;margin-top:12px;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600}
-    .skill-tile .badge.ok{background:rgba(52,211,153,0.15);color:var(--green)}
-    .skill-tile .badge.no{background:rgba(248,113,113,0.15);color:var(--red)}
-    @media(max-width:600px){.skill-grid{grid-template-columns:1fr}}
+    .skill-tile .name{font-weight:600;font-size:13px;margin-bottom:6px;color:#0f172a;font-family:'JetBrains Mono','Inter',-apple-system,monospace;letter-spacing:-0.01em}
+    .skill-tile .desc{color:#475569;font-size:11px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .skill-tile .badge{display:inline-block;margin-top:8px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600}
+    .skill-tile .badge.ok{background:#dcfce7;color:#166534;border:1px solid #86efac}
+    .skill-tile .badge.no{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+    @media(max-width:600px){.skill-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
   `;
   const procCss = `
     .proc-table{width:100%;border-collapse:collapse;background:linear-gradient(145deg,rgba(255,255,255,0.97) 0%,rgba(250,248,255,0.94) 100%);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;overflow:hidden;border:1px solid rgba(13,148,136,0.12);box-shadow:0 8px 36px rgba(15,23,42,0.08),inset 0 1px 0 rgba(255,255,255,0.9)}
@@ -1928,6 +2036,7 @@ function buildSubPage(page) {
   const pt = k => (i18n.zh[k] || i18n.en[k] || k);
   const pageTitle = page === 'skills' ? pt('skills') : page === 'processing' ? pt('processingNow') : page === 'recent' ? pt('recentCalls') : pt('dashboard');
   return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${pageTitle} | OpenClawDash · 专为 OpenClaw 打造可视化仪表盘 · Visual Dashboard for OpenClaw</title><meta name="description" content="OpenClawDash - 专为 OpenClaw 打造可视化仪表盘。监控 API 用量、成本、运行任务与日志。 | Visual dashboard built for OpenClaw."><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>${css}</style></head><body>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <header class="sub-header">
     <a href="/" class="brand">OpenClaw</a>
     <nav class="global-nav">
@@ -1945,6 +2054,7 @@ function buildSubPage(page) {
     <div id="content">${page==='skills'||page==='processing'?'<p class="sub-meta" style="color:var(--muted)">加载中…</p>':''}</div>
   </main>
   <script>
+    (function(){if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var el=document.getElementById('cursorGlow');if(!el)return;document.addEventListener('mousemove',function(e){var x=(e.clientX/window.innerWidth)*100;var y=(e.clientY/window.innerHeight)*100;el.style.setProperty('--gx',x+'%');el.style.setProperty('--gy',y+'%')})})();
     window.__I18N__ = ${JSON.stringify(i18n)};
     let lang = localStorage.getItem('api-console-lang') || 'zh';
     const pageKeyMap = { skills: 'skills', processing: 'processingNow', recent: 'recentCalls', logs: 'logs', home: 'dashboard' };
@@ -2150,7 +2260,7 @@ const server = http.createServer((req, res) => {
       let recent = calls.filter(filterRecent).map(c => ({ ...c, cost: c.cost > 0 ? c.cost : calcCost(c) }));
       if (recent.length > 500) recent = recent.slice(0, 500);
       const activeSessions = Object.entries(sessionsData).filter(([k]) => !k.startsWith('_')).map(([key, s]) => ({
-        key, channel: s.lastChannel || s.deliveryContext?.channel || '-', updatedAt: s.updatedAt, origin: maskOrigin(s.origin?.label || s.origin?.from || '-')
+        key: maskSessionKey(key), channel: s.lastChannel || s.deliveryContext?.channel || '-', updatedAt: s.updatedAt, origin: maskOrigin(s.origin?.label || s.origin?.from || '-')
       }));
       const entries = Object.entries(sessionsData).filter(([k]) => !k.startsWith('_'));
       const sorted = entries.sort((a, b) => (b[1].updatedAt || 0) - (a[1].updatedAt || 0));
@@ -2436,9 +2546,12 @@ const server = http.createServer((req, res) => {
     .log .ln.raw { display: block; }
     .log .ln.raw .ts { display: none; }
     .log .ln.raw .tag { display: none; }
+    @media(prefers-reduced-motion:reduce){.cursor-glow{display:none!important}}
+    .cursor-glow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(13,148,136,0.12) 0%,rgba(20,184,166,0.05) 30%,transparent 55%)}
   </style>
 </head>
 <body>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <div class="container">
     <div class="head">
       <a href="/" class="brand">OpenClaw</a>
@@ -2470,6 +2583,7 @@ const server = http.createServer((req, res) => {
     </div>
   </div>
   <script>
+    (function(){if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;var el=document.getElementById('cursorGlow');if(!el)return;document.addEventListener('mousemove',function(e){var x=(e.clientX/window.innerWidth)*100;var y=(e.clientY/window.innerHeight)*100;el.style.setProperty('--gx',x+'%');el.style.setProperty('--gy',y+'%')})})();
     window.__I18N__ = ${JSON.stringify(i18n)};
     let lang = localStorage.getItem('api-console-lang') || 'zh';
     function t(k){const zh=window.__I18N__.zh;const en=window.__I18N__.en;if(lang==='en')return (en&&en[k])||k;return (zh&&zh[k])||(en&&en[k])||k;}
