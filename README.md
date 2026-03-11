@@ -1,10 +1,11 @@
-<img width="1833" height="989" alt="iShot_2026-03-11_下午10 40 57" src="https://github.com/user-attachments/assets/4cea26d2-ec77-4852-bf89-7b76fc076bf5" /># OpenClawDash 🚀
+# OpenClawDash 🚀
 
 OpenClawDash 是一款专为 OpenClaw 打造的高性能 API 调用监控控制台。它能够实时解析会话日志，为您提供直观的指标展示、费用统计以及系统运行状态监测。
 
 [![Version](https://img.shields.io/badge/version-3.11_V2-blue.svg)](https://github.com/linux503/OpenClawDash)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-
+--- 预览截图
+<img width="1833" height="989" alt="iShot_2026-03-11_下午10 40 57" src="https://github.com/user-attachments/assets/4cea26d2-ec77-4852-bf89-7b76fc076bf5" />
 ---
 ## 🌟 OpenClawDash 3.11 V2 升级说明
 1. **Hero 白底卡片展示**：指标更直观，视觉层次更清晰。
