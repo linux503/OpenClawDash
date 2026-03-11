@@ -1,98 +1,28 @@
+# OpenClaw 脚本工具
+
 ## API 调用监控控制台
-<img width="1810" height="954" alt="iShot_2026-03-11_下午1 14 20" src="https://github.com/user-attachments/assets/3ddedd81-a79c-45d0-84b0-2983d326e251" />
 
-# 🚀 OpenClaw: AI 助手全能调度平台
+查看 OpenClaw 的 API 调用情况（Provider、模型、Token 用量、费用等）。
 
-<p align="left">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License">
-  <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-blue.svg" alt="Platform">
-  <img src="https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green.svg" alt="Node version">
-</p>
-
-**OpenClaw** 是一个强大的 AI 助手集成平台，支持多模型接入、工作空间管理与技能扩展。通过统一的 API 与 **OpenClawDash** 可视化控制台，让你彻底掌控本地 AI 工作流，实现用量与成本的透明化管理。
-
-[快速开始](#六快速上手) | [功能特性](#二主要功能) | [控制台详情](#三api-调用监控控制台) | [联系支持](#七联系我们)
-
----
-
-## 🌟 核心定位
-
-* **⚡ 多模型统一接入**：一份配置，无缝切换 DeepSeek, OpenAI, Google Gemini 等主流模型。
-* **🛡️ 本地优先**：数据存储与运行环境完全本地化，隐私安全尽在掌握。
-* **🧩 无限扩展**：插件化技能系统，支持按需安装 GitHub、天气、笔记等扩展功能。
-
----
-
-## 🛠️ 二、主要功能
-
-### 2.1 多模型调度
-* **主流支持**：原生适配 DeepSeek、OpenAI（及兼容接口）、Google 等。
-* **统一接口**：标准化的调用方式，降低模型切换的开发成本。
-* **凭证管理**：API Key 与多平台凭证的集中加密存储。
-
-### 2.2 技能与空间
-* **技能系统**：预置多种实用技能，支持实时状态检测（可用/不可用），便于依赖排查。
-* **工作空间**：以项目为维度管理对话，支持多任务并行，逻辑清晰互不干扰。
-* **多维接入**：支持 Telegram 机器人、CLI 命令行以及本地集成调用。
-
----
-
-## 📊 三、API 调用监控控制台 (OpenClawDash)
-
-这是 OpenClaw 的“大脑”，通过 `http://127.0.0.1:18790` 提供一站式 Web 管理体验。
-
-### 3.1 核心功能模块
-
-| 模块 | 功能说明 | 核心价值 |
-| :--- | :--- | :--- |
-| **📈 仪表盘** | 总费用、Token 调用量、主模型分布、缓存命中率 | **成本可见**：实时监控消耗，告别账单惊吓 |
-| **🔧 技能管理** | 查看已安装技能列表及可用状态 | **快速修复**：一眼定位插件依赖问题 |
-| **🔥 实时任务** | 展示当前运行中的任务，支持会话终止 | **资源管控**：防止异常任务消耗过多 Token |
-| **📑 调用记录** | 支持按 Provider 筛选及 CSV 导出 | **对账分析**：精细化分析每个请求的成本 |
-| **📝 日志系统** | 网关日志实时刷新，支持多文件切换 | **深度调试**：开发者级别的错误排查工具 |
-| **💻 系统健康** | CPU、内存、硬盘及运行环境监测 | **性能保障**：确保本地运行环境稳定高效 |
-
-> **💡 特性：** 数据每 **30 秒** 自动无感刷新，无需手动干预。
-
----
-
-## 🎯 四、适用场景
-
-* **开发者/团队**：统一管理多模型 Key，精准控制开发测试阶段的 API 成本。
-* **数据分析师**：导出调用记录，分析不同模型的性能与消耗配比。
-* **极客玩家**：构建私有 AI 助手，通过 Telegram 或 CLI 实现高度自定义的自动化流。
-
----
-
-## ⚙️ 五、技术特性
-
-* **轻量化**：基于 Node.js 实现，无外部数据库依赖，即插即用。
-* **跨平台**：完美兼容 macOS (Homebrew), Linux 与 Windows。
-* **数据本地化**：会话日志与用量数据均安全存储在本地状态目录。
-
----
-
-## 🚀 六、快速上手
-
-只需简单四步，开启你的 AI 调度之旅：
+### 服务管理脚本
 
 ```bash
-# 1. 安装 OpenClaw
-npm install -g openclaw
+./service.sh {start|stop|restart|status|logs}
+```
 
-# 2. 初始化环境
-openclaw onboard
+| 命令 | 说明 |
+|------|------|
+| `start` | 后台启动监控控制台 |
+| `stop` | 停止控制台 |
+| `restart` | 重启控制台 |
+| `status` | 查看运行状态、PID、端口、内存与 CPU 占用 |
+| `logs` | 实时查看日志 |
 
-# 3. 启动可视化控制台
-cd ~/.openclaw && ./scripts/service.sh start
+**手动启动：**
+```bash
+node ~/.openclaw/scripts/api-usage-console.js
+```
 
-# 4. 立即访问
-# 浏览器打开 [http://127.0.0.1:18790](http://127.0.0.1:18790)
+**访问：** http://127.0.0.1:18790
 
-
-📬 七、联系我们
-在使用过程中遇到任何挑战，或有功能建议，欢迎联系：
-
-Email: abbtoe@yandex.com
-
-GitHub Issues: 提交反馈
+数据来自 `~/.openclaw/agents/main/sessions/*.jsonl` 会话日志，每 30 秒自动刷新。

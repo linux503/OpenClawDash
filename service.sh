@@ -13,6 +13,8 @@ red() { echo -e "\033[31m$*\033[0m"; }
 green() { echo -e "\033[32m$*\033[0m"; }
 yellow() { echo -e "\033[33m$*\033[0m"; }
 muted() { echo -e "\033[90m$*\033[0m"; }
+cyan() { echo -e "\033[36m$*\033[0m"; }
+bold() { echo -e "\033[1m$*\033[0m"; }
 
 get_pid() {
   [[ -f "$PID_FILE" ]] && cat "$PID_FILE" 2>/dev/null || echo ""
@@ -26,30 +28,33 @@ is_running() {
 
 show_status() {
   echo ""
-  echo "  🦞 OpenClaw API 监控控制台 — 服务状态"
-  echo "  $(muted '────────────────────────────────────────')"
+  echo "  $(muted '╭─') $(bold '🦞 OpenClaw API 监控控制台')"
+  echo "  $(muted '│')"
+  echo "  $(muted '│')  $(muted '─── 服务状态 ───')"
+  echo "  $(muted '│')"
   if is_running; then
     local pid=$(get_pid)
-    green "  状态: 运行中"
-    echo "  PID:  $pid"
-    echo "  端口: $PORT"
-    echo "  地址: http://127.0.0.1:$PORT"
+    echo "  $(muted '│')  $(muted '状态')  $(green '● 运行中')"
+    echo "  $(muted '│')  $(muted 'PID')    $pid"
+    echo "  $(muted '│')  $(muted '端口')  $PORT"
+    echo "  $(muted '│')  $(muted '地址')  $(cyan "http://127.0.0.1:$PORT")"
     if command -v ps >/dev/null 2>&1; then
       local rss=$(ps -p "$pid" -o rss= 2>/dev/null | tr -d ' ')
       local cpu=$(ps -p "$pid" -o %cpu= 2>/dev/null | tr -d ' ')
       if [[ -n "$rss" ]]; then
-        # Linux: rss=KB, macOS: rss 多为 bytes，>10M 时按 bytes 处理
         local mb=$(( rss / 1024 ))
         [[ "$rss" -gt 10485760 ]] 2>/dev/null && mb=$(( rss / 1024 / 1024 ))
-        echo "  内存: ${mb} MB"
+        echo "  $(muted '│')  $(muted '内存')  ${mb} MB"
       fi
-      [[ -n "$cpu" ]] && echo "  CPU:  ${cpu}%"
+      if [[ -n "$cpu" ]]; then
+        echo "  $(muted '│')  $(muted 'CPU')   ${cpu}%"
+      fi
     fi
-    echo ""
   else
-    red "  状态: 未运行"
-    echo ""
+    echo "  $(muted '│')  $(muted '状态')  $(red '● 未运行')"
   fi
+  echo "  $(muted '╰─')"
+  echo ""
 }
 
 port_in_use() {
