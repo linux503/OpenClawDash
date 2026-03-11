@@ -32,7 +32,7 @@ OpenClawDash 是一款专为 OpenClaw 打造的高性能 API 调用监控控制�
 
 明白了，您想要使用 HTML 的方式来嵌入带有点击功能的链接。以下是用 `<a>` 标签格式的 Markdown 内容：
 
-````markdown
+
 # 命令功能说明
 
 - **start**：后台启动监控控制台
