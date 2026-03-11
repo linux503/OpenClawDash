@@ -694,7 +694,7 @@ const i18n = {
   zh: {
     title: 'OpenClawDash',
     titleFull: 'OpenClawDash | 专为 OpenClaw 打造可视化仪表盘 · Visual Dashboard for OpenClaw',
-    sub: '专为 OpenClaw 打造可视化仪表盘。',
+    sub: '一站式监控 使用一目了然',
     navLabel1: '概览', navLabel2: '管理',
     overview: '数据概览', conversationNav: '当前对话', sessionsNav: '会话管理', costsNav: '费用分析', cronNav: '定时任务', recentNav: '调用记录',
     tabToday: '今日', tab7d: '近7天', tabAll: '全部',
@@ -712,7 +712,7 @@ const i18n = {
     cron: '运营任务 · Cron', cronId: '任务 ID', schedule: '调度', status: '状态',
     activeSessions: '活跃会话', session: '会话', channel: '渠道', source: '来源', updatedAt: '更新时间',
     providerStats: 'Provider 统计', modelStats: '模型统计', recentCalls: '最近调用',
-    usageBreakdown: '用量明细', providerDetail: '按 Provider', modelDetail: '按模型', share: '占比', noUsageData: '暂无用量数据', providerNote: '（每 Provider ≈ 一 API Key）',
+    infoOverview: '信息概况', usageBreakdown: '用量明细', providerDetail: '按 Provider', modelDetail: '按模型', share: '占比', noUsageData: '暂无用量数据', providerNote: '（每 Provider ≈ 一 API Key）',
     calls: '调用', input: '输入', output: '输出', cache: '缓存', time: '时间', model: '模型',
     noCron: '暂无定时任务', noSessions: '暂无活跃会话', noData: '暂无数据',
     disabled: '已禁用', active: '活跃', error: '错误', ok: 'OK', refresh: '刷新',
@@ -743,8 +743,7 @@ const i18n = {
     skillsMeta: '共 {n} 个技能 · {m} 个可用', processingRunningMeta: '{n} 个任务运行中', processingProjectsLabel: '正在处理的项目', processingNoProjectInfo: '项目信息暂不可用', recentCallRecordsMeta: '共 {n} 条调用记录',
     dashboard: '仪表盘',
     heroKicker: '◉ 实时使用控制中心',
-    heroTitle: '把 API 使用情况做成真正能看的控制台。',
-    heroDesc: '一站式监控 API 用量、成本与系统健康。关键指标优先，优化支出，识别瓶颈。',
+    heroTitle: '一站式监控 使用一目了然',
     heroTotalCost: '总费用',
     heroCalls: '调用量',
     heroTopModel: '主模型',
@@ -757,7 +756,7 @@ const i18n = {
     onboardingWelcome: '欢迎使用 OpenClaw 控制台',
     onboardingWelcomeDesc: '一站式监控 API 用量、成本与系统健康',
     onboardingStep1: '仪表盘概览',
-    onboardingStep1Desc: '顶部展示总费用、调用量和主模型；下方卡片提供详细数据。点击 ↻ 可手动刷新。',
+    onboardingStep1Desc: '卡片按重要性排序：费用、今日费用、调用量、错误等。点击 ↻ 可手动刷新。',
     onboardingStep2: '时间范围',
     onboardingStep2Desc: '切换「全部」「近7天」「今日」可筛选不同时间段的统计数据。',
     onboardingStep3: '导航',
@@ -772,7 +771,7 @@ const i18n = {
   en: {
     title: 'OpenClawDash',
     titleFull: 'OpenClawDash | 专为 OpenClaw 打造可视化仪表盘 · Visual Dashboard for OpenClaw',
-    sub: 'Visual dashboard built for OpenClaw.',
+    sub: 'All-in-one view of cost, calls, errors & models.',
     navLabel1: 'Overview', navLabel2: 'Manage',
     overview: 'Overview', conversationNav: 'Current Chat', sessionsNav: 'Sessions', costsNav: 'Costs', cronNav: 'Cron', recentNav: 'Recent',
     tabToday: 'Today', tab7d: '7 Days', tabAll: 'All',
@@ -790,7 +789,7 @@ const i18n = {
     cron: 'Cron Jobs', cronId: 'Job ID', schedule: 'Schedule', status: 'Status',
     activeSessions: 'Active Sessions', session: 'Session', channel: 'Channel', source: 'Source', updatedAt: 'Updated',
     providerStats: 'By Provider', modelStats: 'By Model', recentCalls: 'Recent Calls',
-    usageBreakdown: 'Usage Breakdown', providerDetail: 'By Provider', modelDetail: 'By Model', share: 'Share', noUsageData: 'No usage data', providerNote: '(each Provider ≈ one API key)',
+    infoOverview: 'Overview', usageBreakdown: 'Usage Breakdown', providerDetail: 'By Provider', modelDetail: 'By Model', share: 'Share', noUsageData: 'No usage data', providerNote: '(each Provider ≈ one API key)',
     calls: 'Calls', input: 'Input', output: 'Output', cache: 'Cache', time: 'Time', model: 'Model',
     noCron: 'No cron jobs', noSessions: 'No active sessions', noData: 'No data',
     disabled: 'Disabled', active: 'Active', error: 'Error', ok: 'OK', refresh: 'Refresh',
@@ -821,8 +820,7 @@ const i18n = {
     skillsMeta: '{n} skills · {m} ready', processingRunningMeta: '{n} running tasks', processingProjectsLabel: 'Processing projects', processingNoProjectInfo: 'Project info unavailable', recentCallRecordsMeta: '{n} call records',
     dashboard: 'Dashboard',
     heroKicker: '◉ Live Usage Command Center',
-    heroTitle: 'A usage console that actually feels like a real dashboard.',
-    heroDesc: 'Monitor API usage, costs, and system health in one dashboard. Prioritize key metrics, optimize spend, and identify bottlenecks.',
+    heroTitle: 'All-in-one view of cost, calls, errors & models.',
     heroTotalCost: 'Total Cost',
     heroCalls: 'Calls',
     heroTopModel: 'Top Model',
@@ -835,7 +833,7 @@ const i18n = {
     onboardingWelcome: 'Welcome to OpenClaw Console',
     onboardingWelcomeDesc: 'Monitor API usage, costs & system health in one place',
     onboardingStep1: 'Dashboard Overview',
-    onboardingStep1Desc: 'Top hero shows total cost, calls & top model; cards below provide detailed metrics. Click ↻ to refresh manually.',
+    onboardingStep1Desc: 'Cards ordered by priority: cost, today cost, calls, errors. Click ↻ to refresh.',
     onboardingStep2: 'Time Range',
     onboardingStep2Desc: 'Switch between All · 7 Days · Today to filter stats by period.',
     onboardingStep3: 'Navigation',
@@ -905,6 +903,7 @@ const HTML = `<!DOCTYPE html>
     }
     .app { opacity: 1; }
     @keyframes gridPulseSoft { 0%,100%{ opacity: 0.88; } 50%{ opacity: 0.95; } }
+    @keyframes gridDrift { 0%,100%{ background-position: 0 0, 0 0, 0 0; } 50%{ background-position: 0 0, 24px 12px, 12px 24px; } }
     @keyframes orbFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(6%,-5%) scale(1.1)} 66%{transform:translate(-4%,4%) scale(0.95)} }
     @keyframes orbFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-7%,5%) scale(1.15)} }
     @keyframes orbFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(5%,6%) scale(0.92)} 80%{transform:translate(-5%,-3%) scale(1.05)} }
@@ -932,22 +931,23 @@ const HTML = `<!DOCTYPE html>
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background-image:
-        radial-gradient(ellipse 100% 60% at 50% 0%, rgba(13, 148, 136, 0.06) 0%, transparent 60%),
-        linear-gradient(rgba(20, 184, 166, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(20, 184, 166, 0.025) 1px, transparent 1px);
+        radial-gradient(ellipse 100% 60% at 50% 0%, rgba(13, 148, 136, 0.08) 0%, transparent 60%),
+        linear-gradient(rgba(20, 184, 166, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 184, 166, 0.03) 1px, transparent 1px);
       background-size: 100% 100%, 48px 48px, 48px 48px;
       opacity: 0.9;
-      animation: gridPulseSoft 8s ease-in-out infinite;
+      animation: gridPulseSoft 8s ease-in-out infinite, gridDrift 20s ease-in-out infinite;
     }
     body::after {
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.02;
       mix-blend-mode: overlay;
+      animation: noisePulse 6s ease-in-out infinite;
     }
+    @keyframes noisePulse { 0%,100%{ opacity: 0.015; } 50%{ opacity: 0.03; } }
     @media (prefers-reduced-motion: reduce) {
-      body, body::before, .bg-effects .orb, .bg-effects .particle { animation: none !important; }
+      body, body::before, body::after, .bg-effects .orb, .bg-effects .particle { animation: none !important; }
     }
     .bg-effects {
       position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
@@ -983,6 +983,9 @@ const HTML = `<!DOCTYPE html>
     .bg-effects .particle.p3 { width: 3px; height: 3px; left: 45%; top: 70%; animation-duration: 25s; animation-delay: -8s; }
     .bg-effects .particle.p4 { width: 5px; height: 5px; left: 70%; top: 80%; animation-duration: 20s; animation-delay: -2s; }
     .bg-effects .particle.p5 { width: 4px; height: 4px; left: 25%; top: 60%; animation-duration: 24s; animation-delay: -6s; }
+    .bg-effects .particle.p6 { width: 5px; height: 5px; left: 60%; top: 15%; background: rgba(249,115,22,0.2); animation-duration: 28s; animation-delay: -10s; }
+    .bg-effects .particle.p7 { width: 3px; height: 3px; left: 35%; top: 85%; background: rgba(20,184,166,0.25); animation-duration: 22s; animation-delay: -5s; }
+    .bg-effects .particle.p8 { width: 4px; height: 4px; left: 90%; top: 65%; background: rgba(249,115,22,0.15); animation-duration: 26s; animation-delay: -12s; }
     @keyframes particleFloat { 0%,100%{ transform: translate(0,0) scale(1); opacity: 0.6; } 25%{ transform: translate(15px,-20px) scale(1.2); opacity: 1; } 50%{ transform: translate(-10px,10px) scale(0.9); opacity: 0.7; } 75%{ transform: translate(-5px,-15px) scale(1.1); opacity: 0.9; } }
     .bg-effects .scanline {
       display: none;
@@ -1018,192 +1021,13 @@ const HTML = `<!DOCTYPE html>
     }
     @media (max-width: 900px) { .head { grid-template-columns: minmax(0,1fr) minmax(0,1fr); } .head .head-actions { grid-column: 1 / -1; justify-self: start; } }
     .app { padding-top: 120px; }
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-      gap: 24px;
-      margin: 8px 0 28px;
-      align-items: stretch;
-    }
-    .hero-main, .hero-side {
-      position: relative;
-      overflow: hidden;
-      transform: translateZ(0); -webkit-transform: translateZ(0);
-      border-radius: 16px;
-      border: 1px solid rgba(0,0,0,0.06);
-      background: rgba(255,255,255,0.72);
-      backdrop-filter: blur(20px) saturate(1.05);
-      -webkit-backdrop-filter: blur(20px) saturate(1.05);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .hero-main { padding: 28px 28px 24px; display: flex; flex-direction: column; }
-    .hero-side { padding: 24px 26px 22px; display: flex; flex-direction: column; }
-    .hero-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      margin-bottom: 16px;
-      border-radius: 6px;
-      background: rgba(13,148,136,0.08);
-      color: var(--accent);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-weight: 600;
-    }
-    .hero-title {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 26px;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-      color: var(--text);
-      font-weight: 700;
-    }
-    .hero-desc {
-      max-width: 520px;
-      color: var(--text-secondary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 14px;
-      line-height: 1.6;
-      font-weight: 400;
-      letter-spacing: 0;
-    }
-    .hero-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 24px;
-    }
-    .hero-metric {
-      position: relative;
-      padding: 20px;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-      transition: all 0.25s ease;
-      overflow: hidden;
-    }
-    .hero-metric::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      border-radius: 3px 0 0 3px;
-      background: var(--accent);
-    }
-    .hero-metric:nth-child(1)::before { background: #0d9488; }
-    .hero-metric:nth-child(2)::before { background: #14b8a6; }
-    .hero-metric:nth-child(3)::before { background: #f97316; }
-    .hero-metric:nth-child(4)::before { background: #06b6d4; }
-    .hero-metric:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transform: translateY(-2px);
-      border-color: rgba(0,0,0,0.08);
-    }
-    .hero-metric .metric-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #64748b;
-      margin-bottom: 10px;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    .hero-metric .metric-value {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.2;
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.02em;
-    }
-    .hero-side-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-    .hero-side-title {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #64748b;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    .hero-side-desc { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--text-secondary); max-width: 240px; }
-    .hero-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-    }
-    .hero-status::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: currentColor;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-    .hero-pill.wide { grid-column: 1 / -1; }
-    .hero-pill {
-      position: relative;
-      min-width: 0;
-      padding: 18px;
-      border-radius: 10px;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-      transition: all 0.25s ease;
-    }
-    .hero-pill:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transform: translateY(-2px);
-      border-color: rgba(0,0,0,0.08);
-    }
-    .hero-pill .pill-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #64748b;
-      margin-bottom: 8px;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    .hero-pill .pill-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.02em;
-    }
-    .hero-pill .pill-sub {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #64748b;
-      line-height: 1.4;
-    }
-    @media (max-width: 1040px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-metrics { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 540px) {
-      .hero-metrics { grid-template-columns: 1fr; }
-      .hero-main { padding: 20px; }
-      .hero-title { font-size: 22px; }
-    }
+    .cards-section { margin: 8px 0 28px; }
+    .cards-section .section-header { cursor: pointer; user-select: none; }
+    .cards-section .section-header:hover { color: var(--accent); }
+    .cards-section .section-header .collapse-chevron { margin-right: 8px; transition: transform 0.3s ease; }
+    .cards-section.collapsed .section-header .collapse-chevron { transform: rotate(-90deg); }
+    .cards-section .cards-content { max-height: 2000px; opacity: 1; transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.3s ease; }
+    .cards-section.collapsed .cards-content { max-height: 0; opacity: 0; overflow: hidden; margin-top: -8px; pointer-events: none; }
     .global-nav { flex-shrink: 0; justify-self: start; margin: 8px 0 0 48px; }
     .head-actions { justify-self: end; }
     .head h1 {
@@ -1302,7 +1126,9 @@ const HTML = `<!DOCTYPE html>
       cursor: pointer;
       user-select: none;
       box-shadow: 0 4px 24px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 0 1px rgba(255,255,255,0.5);
+      transition: transform 0.2s ease;
     }
+    .card:hover { transform: scale(1.02); }
     .card::after { display: none; }
     .card::focus-visible { outline: none; }
     .card.clicked { animation: cardClick 0.5s ease; }
@@ -1312,18 +1138,18 @@ const HTML = `<!DOCTYPE html>
     .card.success::before { background: linear-gradient(180deg, #6ee7b7, var(--green)); }
     .card.danger::before { background: linear-gradient(180deg, #fda4af, var(--red)); }
     .card .label { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.18em; font-weight: 700; margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; position: relative; z-index: 2; }
-    .card:nth-child(1) .label::before { content: '◉'; color: var(--accent); font-size: 11px; opacity: 0.9; }
-    .card:nth-child(2) .label::before { content: '◇'; color: var(--accent); font-size: 10px; opacity: 0.85; }
-    .card:nth-child(3) .label::before { content: '◆'; color: var(--accent); font-size: 10px; opacity: 0.85; }
-    .card:nth-child(4) .label::before { content: '◎'; color: var(--accent); font-size: 10px; opacity: 0.85; }
-    .card:nth-child(5) .label::before { content: '▤'; color: var(--accent); font-size: 11px; opacity: 0.85; }
-    .card:nth-child(6) .label::before { content: '◉'; color: var(--green); font-size: 11px; opacity: 0.9; }
-    .card:nth-child(7) .label::before { content: '◎'; color: var(--accent); font-size: 10px; opacity: 0.85; }
-    .card:nth-child(8) .label::before { content: '◉'; color: var(--green); font-size: 11px; opacity: 0.9; }
-    .card:nth-child(9) .label::before { content: '⚠'; color: var(--red); font-size: 10px; opacity: 0.9; }
-    .card:nth-child(10) .label::before { content: '◇'; color: var(--accent); font-size: 10px; opacity: 0.85; }
-    .card:nth-child(11) .label::before { content: '◆'; color: var(--accent); font-size: 10px; opacity: 0.85; }
-    .card:nth-child(12) .label::before { content: '⊕'; color: var(--accent); font-size: 11px; opacity: 0.85; }
+    .cards .card:nth-child(1) .label::before { content: '◉'; color: var(--green); font-size: 11px; opacity: 0.9; }
+    .cards .card:nth-child(2) .label::before { content: '◉'; color: var(--green); font-size: 11px; opacity: 0.9; }
+    .cards .card:nth-child(3) .label::before { content: '◎'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(4) .label::before { content: '⚠'; color: var(--red); font-size: 10px; opacity: 0.9; }
+    .cards .card:nth-child(5) .label::before { content: '◆'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(6) .label::before { content: '◎'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(7) .label::before { content: '◎'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(8) .label::before { content: '◇'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(9) .label::before { content: '◆'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(10) .label::before { content: '▤'; color: var(--accent); font-size: 11px; opacity: 0.85; }
+    .cards .card:nth-child(11) .label::before { content: '◇'; color: var(--accent); font-size: 10px; opacity: 0.85; }
+    .cards .card:nth-child(12) .label::before { content: '⊕'; color: var(--accent); font-size: 11px; opacity: 0.85; }
     .card-sub { font-size: 12px; color: var(--muted); margin-top: 8px; position: relative; z-index: 2; }
     .card .val { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1.08; position: relative; z-index: 2; }
     .card.highlight .val { color: var(--accent); }
@@ -1506,7 +1332,7 @@ const HTML = `<!DOCTYPE html>
     <span class="orb orb-1"></span>
     <span class="orb orb-2"></span>
     <span class="orb orb-3"></span>
-    <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span><span class="particle p4"></span><span class="particle p5"></span>
+    <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span><span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span><span class="particle p7"></span><span class="particle p8"></span>
     <span class="scanline"></span>
   </div>
   <div class="app">
@@ -1535,59 +1361,6 @@ const HTML = `<!DOCTYPE html>
       </div>
     </header>
     <div class="alerts" id="alerts"></div>
-    <section class="hero">
-      <div class="hero-main">
-        <div class="hero-kicker" data-i18n="heroKicker">◉ Live Usage Command Center</div>
-        <div class="hero-title" data-i18n="heroTitle">把 API 使用情况做成真正能看的控制台。</div>
-        <div class="hero-desc" data-i18n="heroDesc">一站式监控 API 用量、成本与系统健康。关键指标优先，优化支出，识别瓶颈。</div>
-        <div class="hero-metrics">
-          <div class="hero-metric">
-            <div class="metric-label" data-i18n="heroTotalCost">Total Cost</div>
-            <div class="metric-value" id="heroCost">—</div>
-          </div>
-          <div class="hero-metric">
-            <div class="metric-label" data-i18n="heroCalls">Calls</div>
-            <div class="metric-value" id="heroCalls">—</div>
-          </div>
-          <div class="hero-metric">
-            <div class="metric-label" data-i18n="heroTopModel">Top Model</div>
-            <div class="metric-value" id="heroModel">—</div>
-          </div>
-          <div class="hero-metric">
-            <div class="metric-label" data-i18n="heroDialogueChars">Dialogue Tokens</div>
-            <div class="metric-value" id="heroDialogueChars">—</div>
-          </div>
-        </div>
-      </div>
-      <aside class="hero-side">
-        <div>
-          <div class="hero-side-top">
-            <div>
-              <div class="hero-side-title" data-i18n="heroConsoleStatus">Console Status</div>
-              <div class="hero-side-desc" data-i18n="heroSideDesc">Quick health view for cost, projects, and error activity.</div>
-            </div>
-            <div class="hero-status" id="heroStatus">LIVE</div>
-          </div>
-          <div class="hero-grid">
-            <div class="hero-pill wide">
-              <div class="pill-label" data-i18n="heroTodayCostLabel">Today Cost</div>
-              <div class="pill-value" id="heroTodayCost">—</div>
-              <div class="pill-sub" id="heroTodayMeta">—</div>
-            </div>
-            <div class="hero-pill">
-              <div class="pill-label" data-i18n="heroProjectsLabel">Projects</div>
-              <div class="pill-value" id="heroProjects">—</div>
-              <div class="pill-sub" id="heroProjectsMeta">—</div>
-            </div>
-            <div class="hero-pill">
-              <div class="pill-label" data-i18n="heroErrorsLabel">Errors</div>
-              <div class="pill-value" id="heroErrors">—</div>
-              <div class="pill-sub" id="heroErrorsMeta">—</div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </section>
     <section id="guideSection" class="guide-section">
       <h3 data-i18n="onboardingWelcome">欢迎使用 OpenClaw 控制台</h3>
       <ul>
@@ -1598,20 +1371,25 @@ const HTML = `<!DOCTYPE html>
       </ul>
       <button type="button" class="guide-dismiss" id="guideDismiss" data-i18n="onboardingStart">开始使用</button>
     </section>
-    <div class="cards">
+    <section class="section cards-section" id="cardsSection">
+      <div class="section-header section-title"><span class="collapse-chevron">▾</span><span class="section-header-text" data-i18n="infoOverview">信息概况</span></div>
+      <div class="cards-content">
+      <div class="cards">
+      <div class="card success"><div class="label" data-i18n="cost">Cost</div><div class="val" id="totalCost">$0</div></div>
+      <div class="card success"><div class="label" data-i18n="todayCost">Today Cost</div><div class="val" id="todayCost">$0</div></div>
       <div class="card highlight"><div class="label" data-i18n="apiCalls">API Calls</div><div class="val" id="totalCalls">0</div></div>
+      <div class="card" id="statError"><div class="label" data-i18n="error">Error</div><div class="val" id="errorCount">0</div></div>
+      <div class="card"><div class="label" data-i18n="topModel">Top Model</div><div class="val" id="topModel">—</div></div>
+      <div class="card"><div class="label" data-i18n="todayCalls">Today</div><div class="val" id="todayCalls">0</div></div>
+      <div class="card"><div class="label" data-i18n="sessions">Sessions</div><div class="val" id="sessionCount">0</div></div>
       <div class="card"><div class="label" data-i18n="questions">Questions</div><div class="val" id="userQuestions">0</div></div>
       <div class="card"><div class="label" data-i18n="toolCalls">Tool Calls</div><div class="val" id="toolCallCount">0</div></div>
-      <div class="card"><div class="label" data-i18n="sessions">Sessions</div><div class="val" id="sessionCount">0</div></div>
       <div class="card"><div class="label" data-i18n="totalTokens">Total Tokens</div><div class="val" id="totalTokens">0</div></div>
-      <div class="card success"><div class="label" data-i18n="cost">Cost</div><div class="val" id="totalCost">$0</div></div>
-      <div class="card"><div class="label" data-i18n="todayCalls">Today</div><div class="val" id="todayCalls">0</div></div>
-      <div class="card success"><div class="label" data-i18n="todayCost">Today Cost</div><div class="val" id="todayCost">$0</div></div>
-      <div class="card" id="statError"><div class="label" data-i18n="error">Error</div><div class="val" id="errorCount">0</div></div>
       <div class="card highlight" id="statProjects"><div class="label" data-i18n="projects">项目情况</div><div class="val" id="projectCount">0</div><div class="card-sub" id="projectSub">—</div></div>
-      <div class="card"><div class="label" data-i18n="topModel">Top Model</div><div class="val" id="topModel">—</div></div>
       <div class="card"><div class="label" data-i18n="cacheHitRate">缓存命中率</div><div class="val" id="cacheHitRateCard">—</div><div class="card-sub" id="cacheHitRateSub">—</div></div>
-    </div>
+      </div>
+      </div>
+    </section>
     <section class="section usage-breakdown-section" id="usageBreakdownSection">
       <div class="section-header section-title"><span class="collapse-chevron">▾</span><span class="section-header-text" data-i18n="usageBreakdown">用量明细</span></div>
       <div class="usage-breakdown-content" id="usageBreakdownContent">
@@ -1756,14 +1534,23 @@ const HTML = `<!DOCTYPE html>
         localStorage.setItem(KEY, '1');
       });
     })();
-    (function initSysInfoCollapse() {
-      const sec = document.getElementById('sysInfoSection');
-      const stored = localStorage.getItem('api-console-sysinfo-collapsed');
-      if (sec) {
-        if (stored === '1') sec.classList.add('collapsed');
-        sec.querySelector('.section-header')?.addEventListener('click', () => {
-          sec.classList.toggle('collapsed');
-          localStorage.setItem('api-console-sysinfo-collapsed', sec.classList.contains('collapsed') ? '1' : '0');
+    (function initSectionCollapse() {
+      const cardsSec = document.getElementById('cardsSection');
+      const cardsStored = localStorage.getItem('api-console-cards-collapsed');
+      if (cardsSec) {
+        if (cardsStored === '1') cardsSec.classList.add('collapsed');
+        cardsSec.querySelector('.section-header')?.addEventListener('click', () => {
+          cardsSec.classList.toggle('collapsed');
+          localStorage.setItem('api-console-cards-collapsed', cardsSec.classList.contains('collapsed') ? '1' : '0');
+        });
+      }
+      const sysSec = document.getElementById('sysInfoSection');
+      const sysStored = localStorage.getItem('api-console-sysinfo-collapsed');
+      if (sysSec) {
+        if (sysStored === '1') sysSec.classList.add('collapsed');
+        sysSec.querySelector('.section-header')?.addEventListener('click', () => {
+          sysSec.classList.toggle('collapsed');
+          localStorage.setItem('api-console-sysinfo-collapsed', sysSec.classList.contains('collapsed') ? '1' : '0');
         });
       }
     })();
@@ -1870,10 +1657,6 @@ const HTML = `<!DOCTYPE html>
         const recent = data.recent || [];
 
         setText('totalCalls', a.totalCalls ?? 0);
-        setText('heroCost', fmtCost(a.totalCost ?? 0));
-        setText('heroCalls', fmt(a.totalCalls ?? 0));
-        setText('heroModel', a.topModel ? a.topModel.replace(/^[^/]+\\//, '') : '—');
-        setText('heroDialogueChars', fmt((a.totalTokens ?? (a.totalInput || 0) + (a.totalOutput || 0)) || 0));
         setText('userQuestions', a.userQuestions ?? 0);
         setText('toolCallCount', a.toolCallCount ?? 0);
         setText('sessionCount', a.sessionCount ?? 0);
@@ -1953,21 +1736,7 @@ const HTML = `<!DOCTYPE html>
         setSysCardState('queueCronMain', queueCount > 0 || cronCount > 0 ? 'is-good' : 'is-empty');
         setSysCardState('dataStatusMain', dataSource === 'GATEWAY' ? 'is-good' : 'is-empty');
         setText('projectCount', projCount);
-        setText('heroTodayCost', fmtCost(a.todayCost ?? 0));
-        setText('heroTodayMeta', (a.todayCalls ?? 0) + t('callsTodaySuffix'));
-        setText('heroProjects', String(projCount));
-        setText('heroProjectsMeta', 'memory ' + memCount + t('memoryItemsSuffix'));
-        setText('heroErrors', String(a.errorCount ?? 0));
-        setText('heroErrorsMeta', (a.errorCount ?? 0) > 0 ? ((a.errorRate ?? 0).toFixed(1) + '% ' + t('errorRateLabel')) : t('noCurrentErrors'));
         setText('projectSub', ps.workspacePath ? t('projectsSub').replace('{n}', projCount).replace('{m}', memCount) : '—');
-        const heroStatus = document.getElementById('heroStatus');
-        if (heroStatus) {
-          const hasErr = (a.errorCount ?? 0) > 0;
-          heroStatus.textContent = hasErr ? 'ATTENTION' : 'LIVE';
-          heroStatus.style.background = hasErr ? 'rgba(248,113,113,0.12)' : 'rgba(52,211,153,0.12)';
-          heroStatus.style.color = hasErr ? 'var(--red)' : 'var(--green)';
-          heroStatus.style.borderColor = hasErr ? 'rgba(248,113,113,0.24)' : 'rgba(52,211,153,0.24)';
-        }
         const alerts = [];
         if (data.hint && data.hint.noData) {
           alerts.push({ type: 'err', msg: t('noDataHint') + ': cd ~/.openclaw && ./scripts/service.sh start' });
@@ -2084,15 +1853,37 @@ function buildSubPage(page) {
     .sub-meta{font-size:13px;color:var(--muted);margin-bottom:24px;padding-left:20px}
   `;
   const skillCss = `
-    .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-    .skill-tile{background:linear-gradient(145deg,rgba(255,255,255,0.96) 0%,rgba(250,248,255,0.92) 100%);border:1px solid rgba(13,148,136,0.2);border-radius:18px;padding:22px;transition:all 0.4s cubic-bezier(0.22,1,0.36,1);position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,0.95),0 12px 40px rgba(107,61,143,0.1),0 0 0 1px rgba(13,148,136,0.08)}
-    .skill-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,transparent,var(--accent),var(--accent-2),transparent);border-radius:18px 0 0 18px;opacity:0.9;box-shadow:0 0 24px rgba(13,148,136,0.5)}
-    .skill-tile:hover{transform:translateY(-10px) scale(1.02);box-shadow:inset 0 1px 0 rgba(255,255,255,0.98),0 24px 56px rgba(107,61,143,0.18),0 0 0 1px rgba(13,148,136,0.4),0 0 50px rgba(13,148,136,0.12);border-color:rgba(13,148,136,0.45)}
-    .skill-tile .name{font-weight:600;font-size:15px;margin-bottom:8px;color:var(--text)}
-    .skill-tile .desc{color:var(--muted);font-size:12px;line-height:1.5}
-    .skill-tile .badge{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:4px;font-size:10px}
-    .skill-tile .badge.ok{background:rgba(52,211,153,0.2);color:var(--green)}
-    .skill-tile .badge.no{background:rgba(248,113,113,0.2);color:var(--red)}
+    .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+    .skill-tile{
+      background:linear-gradient(135deg,rgba(255,255,255,0.32) 0%,rgba(250,252,250,0.28) 100%);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      border:1px solid rgba(13,148,136,0.12);
+      border-radius:16px;
+      padding:24px 26px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 4px 24px rgba(15,23,42,0.06),inset 0 1px 0 rgba(255,255,255,0.9);
+      transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+    }
+    .skill-tile::before{
+      content:'';
+      position:absolute;left:0;top:0;bottom:0;
+      width:4px;
+      background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      border-radius:16px 0 0 16px;
+      opacity:0.9;
+    }
+    .skill-tile:hover{
+      transform:scale(1.02);
+      box-shadow:0 8px 32px rgba(15,23,42,0.1);
+      border-color:rgba(13,148,136,0.25);
+    }
+    .skill-tile .name{font-weight:600;font-size:16px;margin-bottom:10px;color:var(--text);font-family:'Inter',-apple-system,sans-serif}
+    .skill-tile .desc{color:var(--muted);font-size:13px;line-height:1.55}
+    .skill-tile .badge{display:inline-block;margin-top:12px;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600}
+    .skill-tile .badge.ok{background:rgba(52,211,153,0.15);color:var(--green)}
+    .skill-tile .badge.no{background:rgba(248,113,113,0.15);color:var(--red)}
+    @media(max-width:600px){.skill-grid{grid-template-columns:1fr}}
   `;
   const procCss = `
     .proc-table{width:100%;border-collapse:collapse;background:linear-gradient(145deg,rgba(255,255,255,0.97) 0%,rgba(250,248,255,0.94) 100%);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;overflow:hidden;border:1px solid rgba(13,148,136,0.12);box-shadow:0 8px 36px rgba(15,23,42,0.08),inset 0 1px 0 rgba(255,255,255,0.9)}
