@@ -11,10 +11,7 @@
 ./service.sh {start|stop|restart|status|logs}
 ```
 <img width="1810" height="954" alt="iShot_2026-03-11_下午1 14 20" src="https://github.com/user-attachments/assets/3ddedd81-a79c-45d0-84b0-2983d326e251" />
-![Uploading iShot_2026-03-11_下午1.14.29.png…]()
-![Uploading iShot_2026-03-11_下午1.14.40.png…]()
 
-![Uploading iShot_2026-03-11_下午1.15.00.png…]()
 
 | 命令 | 说明 |
 |------|------|
