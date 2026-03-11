@@ -772,7 +772,7 @@ const i18n = {
     convUser: '用户', convAssistant: '助手', convTool: '工具', convNoMessages: '暂无对话记录',
     noRunningWithQueue: '暂无运行中任务 · 排队 {n} 个', update: '更新', connError: '无法连接服务器',
     backToHome: '← 返回首页',
-    noDataHint: '未读取到数据。请确保控制台已启动', costHigh: '今日费用较高', retryLink: '刷新重试',
+    noDataHint: '未读取到数据。请确保控制台已启动', noDataHintDir: '未读取到数据。当前数据目录: {dir}。若 OpenClaw 数据在其他路径，请设置环境变量 OPENCLAW_HOME 或 OPENCLAW_STATE_DIR 后重启控制台', costHigh: '今日费用较高', retryLink: '刷新重试',
     skillbox: 'SkillBox',
     fileProtocol: '请通过',
     noCacheReads: '暂无缓存读取', waitingForSysData: '等待系统数据', coresLabel: '核心数 ', noCpuInfo: '暂无 CPU 核心信息',
@@ -850,7 +850,7 @@ const i18n = {
     convUser: 'User', convAssistant: 'Assistant', convTool: 'Tool', convNoMessages: 'No messages',
     noRunningWithQueue: 'No running tasks · {n} queued', update: 'Updated', connError: 'Cannot connect to server',
     backToHome: '← Back to Home',
-    noDataHint: 'No data. Ensure console is running', costHigh: 'Daily cost is high', retryLink: 'Retry',
+    noDataHint: 'No data. Ensure console is running', noDataHintDir: 'No data. Current data dir: {dir}. If OpenClaw data is elsewhere, set OPENCLAW_HOME or OPENCLAW_STATE_DIR and restart.', costHigh: 'Daily cost is high', retryLink: 'Retry',
     skillbox: 'SkillBox',
     fileProtocol: 'Please access via',
     noCacheReads: 'No cache reads yet', waitingForSysData: 'Waiting for system data', coresLabel: 'Cores ', noCpuInfo: 'No CPU core info',
@@ -1824,7 +1824,11 @@ const HTML = `<!DOCTYPE html>
         setText('projectSub', ps.workspacePath ? t('projectsSub').replace('{n}', projCount).replace('{m}', memCount) : '—');
         const alerts = [];
         if (data.hint && data.hint.noData) {
-          alerts.push({ type: 'err', msg: t('noDataHint') + ': cd ~/.openclaw && ./scripts/service.sh start' });
+          const dir = (data.hint.dataDir || data.meta?.dataDir || '').toString();
+          const msg = dir
+            ? t('noDataHintDir').replace('{dir}', dir)
+            : t('noDataHint') + ' (Mac: cd ~/.openclaw && ./scripts/service.sh start)';
+          alerts.push({ type: 'err', msg });
         }
         const byProvider = a.byProvider || {};
         const byModel = a.byModel || {};
