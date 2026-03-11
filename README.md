@@ -8,7 +8,7 @@ OpenClawDash 是一款专为 OpenClaw 打造的高性能 API 调用监控控制�
 --- 预览截图
 <img width="1833" height="989" alt="iShot_2026-03-11_下午10 40 57" src="https://github.com/user-attachments/assets/4cea26d2-ec77-4852-bf89-7b76fc076bf5" />
 ---
-## 🌟 OpenClawDash 3.11 V2 升级说明
+## 🌟 OpenClawDash 3.11 V4 升级说明
 1. **Hero 白底卡片展示**：指标更直观，视觉层次更清晰。
 2. **显示稳定性优化**：指标卡片去除 hover 闪烁，交互更顺滑。
 3. **全界面双语支持**：页脚纯黑风格，标题与分享支持中英双语切换。
