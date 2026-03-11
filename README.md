@@ -4,6 +4,7 @@ OpenClawDash 是一款专为 OpenClaw 打造的高性能 API 调用监控控制�
 
 [![Version](https://img.shields.io/badge/version-3.11_V2-blue.svg)](https://github.com/linux503/OpenClawDash)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 --- 预览截图
 <img width="1833" height="989" alt="iShot_2026-03-11_下午10 40 57" src="https://github.com/user-attachments/assets/4cea26d2-ec77-4852-bf89-7b76fc076bf5" />
 ---
