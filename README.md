@@ -2,6 +2,7 @@
 
 ## API 调用监控控制台
 
+
 查看 OpenClaw 的 API 调用情况（Provider、模型、Token 用量、费用等）。
 
 ### 服务管理脚本
@@ -9,6 +10,7 @@
 ```bash
 ./service.sh {start|stop|restart|status|logs}
 ```
+
 
 | 命令 | 说明 |
 |------|------|
@@ -26,3 +28,4 @@ node ~/.openclaw/scripts/api-usage-console.js
 **访问：** http://127.0.0.1:18790
 
 数据来自 `~/.openclaw/agents/main/sessions/*.jsonl` 会话日志，每 30 秒自动刷新。
+
