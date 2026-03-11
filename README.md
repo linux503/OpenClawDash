@@ -56,9 +56,8 @@ node ~/.openclaw/scripts/api-usage-console.js
 * 访问入口：[http://127.0.0.1:18790](http://127.0.0.1:18790)
 
 ## 相关项目与扩展
-
-* 即将发布：[<a data-start="493" data-end="547" class="decorated-link cursor-pointer" rel="noopener" target="_new">SkillBox 技能分析网站</a>]
-* 核心项目：[<a data-start="493" data-end="547" class="decorated-link cursor-pointer" rel="noopener" target="_new">OpenClawDash GitHub</a>]
+* **核心仓库**：[OpenClawDash](https://github.com/linux503/OpenClawDash)
+* **即将发布**：[SkillBox.lol](https://skillbox.lol/)
 
 ## 📧 联系与反馈
 
